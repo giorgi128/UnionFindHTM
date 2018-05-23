@@ -13,7 +13,7 @@ uint64_t Find(Node * nodes, uint64_t u, const uint64_t &maxCAS)
         if (v == w) return v;
         else
         {
-            nodes[u].p.compare_exchange_strong(v, w));
+            nodes[u].p.compare_exchange_strong(v, w);
             u = nodes[u].p.load(std::memory_order_relaxed);
         }
     }

@@ -1,0 +1,21 @@
+called: /usr/bin/g++
+	/Users/giorginadiradze/Documents/UnionFindHTM
+	/usr/bin/g++
+	RankSequentialRun.cpp
+	-o
+	seqnocomp.out
+	-DFIND_H_FILE=seqnocomp.h
+	-mrtm
+	-O3
+	-std=c++11
+	-DUSE_GSTATS
+	-DMAX_TID_POW2=128
+	-I./
+	-I./Finds
+	-I./common
+	-I./include
+	-DUSE_PAPI
+	-L./lib
+	-pthread
+	-lpapi
+

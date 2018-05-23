@@ -6,7 +6,7 @@
 
 uint64_t Find(Node * nodes, uint64_t u, const uint64_t &maxCAS)
 {
-    uint64_v, w,; //number of unsuccessful CAS operations
+    uint64_v, w;
     while (1)
     {
         temp=u;
@@ -18,7 +18,7 @@ uint64_t Find(Node * nodes, uint64_t u, const uint64_t &maxCAS)
             else
             {
                 uint64_t temp = v; //use temp because value of v can be changed in the next command
-                nodes[u].p.compare_exchange_strong(v, w));
+                nodes[u].p.compare_exchange_strong(v, w);
             }
         }
         u = temp;

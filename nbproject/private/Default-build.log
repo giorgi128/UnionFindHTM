@@ -1,0 +1,10 @@
+g++ RankSequentialRun.cpp -o seqnocomp.out -DFIND_H_FILE=seqnocomp.h -mrtm -O3 -std=c++11 -DUSE_GSTATS -DMAX_TID_POW2=128 -I./ -I./Finds -I./common -I./include -DUSE_PAPI -L./lib -pthread -lpapi
+In file included from RankSequentialRun.cpp:27:
+./common/papi_util_impl.h:34:9: error: no matching function for call to 'PAPI_thread_init'
+    if (PAPI_thread_init(pthread_self) != PAPI_OK) {
+        ^~~~~~~~~~~~~~~~
+./include/papi.h:1090:10: note: candidate function not viable: no known conversion from 'pthread_t  _Nonnull ()' (aka '_opaque_pthread_t * _Nonnull ()') to 'unsigned long (*)()' for 1st argument
+   int   PAPI_thread_init(unsigned long (*id_fn) (void)); /**< initialize thread support in the PAPI library */
+         ^
+1 error generated.
+make: *** [seqnocomp] Error 1

@@ -242,7 +242,7 @@ double mainThreads(op::Operation * a, uint64_t n, uint64_t m, int nthreads, int 
     ready.store(0);
     barrier.store(0);
 
-    std::vector<std::thread> threads(nthreads);
+    std::vector<std::thread> threads(MAX_TID_POW2);
 
     uint64_t len = m / nthreads + 1;
 
