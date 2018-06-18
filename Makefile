@@ -7,26 +7,26 @@ FLAGS += -I./common
 FLAGS += -I./include
 LDFLAGS = -L./lib -pthread
 
-FLAGS += -DUSE_PAPI
-LDFLAGS += -lpapi
+#FLAGS += -DUSE_PAPI
+#LDFLAGS += -lpapi
 
-all: seq con
+#XX=g++
+#CXXFLAGS=
+#LDFLAGS=
+#CPPFILE=main.cpp
 
-con: connocomp conhalving consplitting
-connocomp:
-	$(CPP) RankConcurrentRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
-conhalving:
-	$(CPP) RankConcurrentRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
-consplitting:
-	$(CPP) RankConcurrentRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
+UNIONBY=rank random
+MODE=seq con
+COMPRESSBY=nocomp splitting halving
 
-seq: seqnocomp seqhalving seqsplitting
-seqnocomp:
-	$(CPP) RankSequentialRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
-seqhalving:
-	$(CPP) RankSequentialRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
-seqsplitting:
-	$(CPP) RankSequentialRun.cpp -o $@.out -DFIND_H_FILE=$@.h $(FLAGS) $(LDFLAGS)
+#seq.rank.splitting
+all: $(foreach mode,$(MODE),$(foreach unionby,$(UNIONBY),$(foreach compressby,$(COMPRESSBY),$(mode).$(unionby).$(compressby))))
+
+define CREATETARGETS
+$(1).$(2).$(3):
+	$(CPP) $(1).$(2).cpp  -o $(1).$(2).$(3).out -DFIND_H_FILE=$(1)$(3).h $(FLAGS) $(LDFLAGS)
+endef
+$(foreach mode,$(MODE),$(foreach unionby,$(UNIONBY),$(foreach compressby,$(COMPRESSBY), $(eval $(call CREATETARGETS,$(mode),$(unionby),$(compressby))))))
 
 clean:
-	rm -f *.out
+	rm *.out

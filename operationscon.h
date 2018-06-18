@@ -28,45 +28,42 @@ struct Operation
 			vec.clear();
 		
 			uint64_t u, v;	
-            uint64_t i = 0;
+                        uint64_t i = 0;
             
 			while (i < inputstr.size())
-            {
-                uint64_t j = i;
-                std::string fname = "";
-                while (inputstr[j] != ';') { fname += inputstr[j]; j++; }
-                //i = j + 1;
+                        {
+                            uint64_t j = i;
+                            std::string fname = "";
+                            while (inputstr[j] != ';') { fname += inputstr[j]; j++; }
                 
-                std::ifstream inf;
-            
-                inf.open(fname);
-                if (!inf) { fprintf(stdout, "%d\n", (int) (j/i)); }
-                uint64_t curn = 0;
-                i = j + 1;
-                while (inf >> u >> v)
-                {
-                    vec.push_back(Operation(n + u, n + v));
-                    if (u > curn) curn = u;
-                    if (v > curn) curn = v;
-                    m++;
-                }
-                n += (curn + 1);
-                inf.close();
+                            std::ifstream inf;
+                
+                            inf.open(fname);
+                            if (!inf) { fprintf(stdout, "FileNotOpened\n"); }
+                            uint64_t curn = 0;
+                            i = j + 1;
+                            while (inf >> u >> v)
+                            {
+                                vec.push_back(Operation(n + u, n + v));
+                                if (u > curn) curn = u;
+                                if (v > curn) curn = v;
+                                m++;
+                            }
+                            n += (curn + 1);
+                            inf.close();
  			}
 			
-            Operation * o = new Operation[m];
-//            Operation ** o = static_cast<Operation**>(memalloc::CallocAligned(m, sizeof
-//                                                                             (Operation*), memalloc::kCachePrefetch * 4));
-            
+                        Operation * o = new Operation[m];
+     
   			for (uint64_t i = 0; i < m; i++)
-            {
+                        {
                 
-//                o[i] = static_cast<Operation*>(memalloc::get<Operation>(memalloc::kCachePrefetch * 4));
-//                *o[i] = vec[i];
-                o[i] = vec[i];
-            }
-            return o;
-        }
+
+                            o[i] = vec[i];
+                        }
+                        
+                        return o;
+                }
 }
 #endif
 

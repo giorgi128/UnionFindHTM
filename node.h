@@ -13,7 +13,7 @@
 class Node {
 public:
     std::atomic<uint64_t> p;
-    std::atomic<uint64_t> id;
+    uint64_t id;
     Node() {}
 };
 

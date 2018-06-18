@@ -107,7 +107,7 @@ void Comp(uint64_t *res) //compute array of minimum index nodes in the component
     }
 }
 
-void Init() {
+void Init(int seed) {
     //p = new std::atomic<uint64_t>[n];
     //id = new uint64_t[n];
 
@@ -119,11 +119,22 @@ void Init() {
      for (uint64_t i = 0; i < n; i++)
      {
          nodes[i].p = i;
-         nodes[i].id = 0;
 //         p[i] = static_cast<std::atomic<uint64_t>*>(memalloc::get<std::atomic<uint64_t>>(memalloc::kCachePrefetch * 4));
 //         id[i] = static_cast<uint64_t*>(memalloc::get<uint64_t>(memalloc::kCachePrefetch * 4));
 //        p[i]->store(i, std::memory_order_relaxed);
 //        *id[i] = 0;
+    }
+    std::mt19937 rng;
+    rng.seed(seed);
+    //create a random permutation
+    for (uint64_t i = 0;  i < n; i++) nodes[i].id = i;
+    for (uint64_t i = 0; i < n; i++)
+    {
+        std::uniform_int_distribution<uint64_t> rnd_st(i, n - 1);
+        uint64_t j = rnd_st(rng);
+        uint64_t temp = nodes[i].id;
+        nodes[i].id = nodes[j].id;
+        nodes[j].id = temp;
     }
 }
 
@@ -133,24 +144,30 @@ bool Unite(uint64_t u, uint64_t v) {
         u = Find(nodes, u, maxCAS);
         v = Find(nodes, v, maxCAS);
         if (u == v) return 1;
-        //Transaction
-        unsigned status;
-        if ((status = _xbegin()) == _XBEGIN_STARTED) {
-            if (nodes[u].id <= nodes[v].id) {
-                nodes[u].p = v;
-                if (nodes[u].id == nodes[v].id) (nodes[v].id)++;
-            } else {
-                nodes[v].p = u;
-            }
-            _xend();
-            GSTATS_ADD(tid, txn_commit, 1);
-            return 0;
-        } else {
-            GSTATS_ADD(tid, txn_abort, 1);
-            //cntfail++;
-            //  if (cntfail == 1000) break;
-        }
 
+        if (nodes[u].id < nodes[v].id) {
+                if (nodes[u].p.compare_exchange_strong(u, v))
+                {
+                    GSTATS_ADD(tid, txn_commit, 1);
+                    return 0;
+                }
+                else
+                {
+                    GSTATS_ADD(tid, txn_abort, 1);
+                }
+            
+        } else {
+            
+                if (nodes[v].p.compare_exchange_strong(v, u))
+                {
+                    GSTATS_ADD(tid, txn_commit, 1);
+                    return 0;
+                }
+                else
+                {
+                    GSTATS_ADD(tid, txn_abort, 1);
+                }
+        }
     }
 }
 
@@ -291,8 +308,8 @@ double mainThreads(op::Operation * a, uint64_t n, uint64_t m, int nthreads, int 
     get_monotonic_time(&end);
     __sync_synchronize();
     
-    for (auto &thread : threads) {
-        thread.join();
+    for (int i = 0; i < nthreads; i++) {       
+        threads[i].join();
     }
 
     /* End benchmark */
@@ -304,8 +321,9 @@ int main() {
     uint64_t mSameSet, mUnite, mExtraUnite, nExtraUnite;
     int nthreads;
     std::string inputstr;
-
-    std::cin >> inputstr >> mSameSet >> nthreads >> seed >> maxCAS;
+    
+    inputstr="roadNet-CA.txt;";
+    std::cin >> mSameSet >> nthreads >> seed;
 
     // setup per-thread statistics
     GSTATS_CREATE_ALL;
@@ -315,8 +333,7 @@ int main() {
                 
     op::Operation * o = op::getOperations(inputstr, n, mUnite);
 
-
-    Init();
+    Init(seed);
 
     double elapsedUnite = mainThreads(o, n, mUnite, nthreads, seed);
 

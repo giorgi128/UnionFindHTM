@@ -86,7 +86,7 @@ void Init(int seed)
     rng.seed(seed);
     //create a random permutation
     for (uint64_t i = 0;  i < n; i++) rank[i] = i;
-    for (uint64_t i = 0; i < n; i+++)
+    for (uint64_t i = 0; i < n; i++)
     {
         std::uniform_int_distribution<uint64_t> rnd_st(i, n - 1);
         uint64_t j = rnd_st(rng);
@@ -211,7 +211,9 @@ int main()
     uint64_t mSameSet, mUnite, mExtraUnite, nExtraUnite;
     std::string inputstr;
     
-    std::cin >> inputstr >> mSameSet >> seed;
+    inputstr="roadNet-CA.txt;";
+    
+    std::cin >> mSameSet >> seed;
 
     GSTATS_CREATE_ALL;
     GSTATS_CLEAR_ALL;

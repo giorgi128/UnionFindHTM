@@ -202,7 +202,9 @@ int main()
     uint64_t mSameSet, mUnite, mExtraUnite, nExtraUnite;
     std::string inputstr;
     
-    std::cin >> inputstr >> mSameSet >> seed;
+    inputstr="roadNet-CA.txt;";
+    
+    std::cin >> mSameSet >> seed;
 
     GSTATS_CREATE_ALL;
     GSTATS_CLEAR_ALL;

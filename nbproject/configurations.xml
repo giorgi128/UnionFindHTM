@@ -2,8 +2,10 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
-      <in>RankConcurrentRun.cpp</in>
-      <in>RankSequentialRun.cpp</in>
+      <in>con.random.cpp</in>
+      <in>con.rank.cpp</in>
+      <in>seq.random.cpp</in>
+      <in>seq.rank.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -44,10 +46,9 @@
               <pElem>include</pElem>
             </incDir>
             <preprocessorList>
-              <Elem>FIND_H_FILE=connocomp.h</Elem>
+              <Elem>FIND_H_FILE=seqnocomp.h</Elem>
               <Elem>MAX_TID_POW2=128</Elem>
               <Elem>USE_GSTATS</Elem>
-              <Elem>USE_PAPI</Elem>
             </preprocessorList>
           </ccTool>
         </makeTool>
@@ -56,15 +57,26 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
-      <item path="RankConcurrentRun.cpp" ex="false" tool="1" flavor2="8">
+      <item path="con.random.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <preprocessorList>
+            <Elem>FIND_H_FILE=connocomp.h</Elem>
+          </preprocessorList>
+        </ccTool>
+      </item>
+      <item path="con.rank.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <preprocessorList>
+            <Elem>FIND_H_FILE=conhalving.h</Elem>
+          </preprocessorList>
+        </ccTool>
+      </item>
+      <item path="seq.random.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="RankSequentialRun.cpp" ex="false" tool="1" flavor2="8">
+      <item path="seq.rank.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>FIND_H_FILE=seqnocomp.h</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
     </conf>

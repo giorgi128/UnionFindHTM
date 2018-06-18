@@ -30,15 +30,15 @@
       </df>
       <df name="lib">
       </df>
-      <in>RandomConcurrentRun.cpp</in>
-      <in>RandomSequentialRun.cpp</in>
-      <in>RankConcurrentRun.cpp</in>
-      <in>RankSequentialRun.cpp</in>
       <in>allocation.h</in>
+      <in>con.random.cpp</in>
+      <in>con.rank.cpp</in>
       <in>findversion.h</in>
       <in>node.h</in>
       <in>operations.h</in>
       <in>operationscon.h</in>
+      <in>seq.random.cpp</in>
+      <in>seq.rank.cpp</in>
     </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>

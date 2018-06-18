@@ -43,7 +43,7 @@ namespace op {
 
             inf.open(fname);
             if (!inf) {
-                fprintf(stdout, "%d\n", (int) (j / i));
+                fprintf(stdout, "FileNoOpened\n");
             }
             uint64_t curn = 0;
             i = j + 1;
